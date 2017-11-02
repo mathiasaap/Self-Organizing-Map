@@ -18,7 +18,7 @@ class SOM(object):
             #print("Iteration {}".format(self.iteration))
             datapoint = random.choice(self.dataset)
             closest_node = self.closest_node(datapoint)
-            self.update_nodes(closest_node)
+            self.update_nodes(closest_node, datapoint)
             self.iteration += 1
 
 
@@ -41,12 +41,12 @@ class SOM(object):
         return winning_node
 
 
-    def update_nodes(self, center_node):
+    def update_nodes(self, center_node, datapoint):
         learn_rate = self.learn_rate()
         sigma = self.sigma()
 
         for node in self.nodes:
-            node.update_weight(center_node, learn_rate, sigma)
+            node.update_weight(center_node, datapoint, learn_rate, sigma)
 
     def report(self):
         raise NotImplementedError

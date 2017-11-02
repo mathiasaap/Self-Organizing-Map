@@ -18,8 +18,8 @@ class Node(object):
     def T(self, other_node, sigma):
         raise NotImplementedError
 
-    def update_weight(self, center_node, learn_rate, sigma):
+    def update_weight(self, center_node, datapoint, learn_rate, sigma):
         t = self.T(center_node, sigma)
-        distance = center_node.weights - self.weights
+        distance = datapoint - self.weights
         #print(learn_rate * t * distance)
         self.weights += learn_rate * t * distance
