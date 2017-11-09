@@ -5,7 +5,7 @@ class MNISTGraphics:
         self.width, self.height = width, height
         pygame.init()
         self.surface = pygame.display.set_mode((width, height))
-        self.colors = [(0,0,102),(51,0,102), (0,153,51), (0,255,255), (255,0,51),(204,102,51), (255,51,255),(255,255,51), (0,204,0),(102,0,0)]
+        self.colors = [(0,0,102),(51,0,102), (0,153,51), (0,255,255), (255,0,51),(204,102,51), (255,51,255),(255,255,51), (255,0,0),(102,0,0)]
 
     def draw_frame(self, problem):
         self.surface.fill((255,255,255))
