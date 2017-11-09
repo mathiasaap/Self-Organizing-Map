@@ -7,10 +7,7 @@ class Node(object):
         self.weights = np.random.rand(nodes_in)
 
     def dist(self, V):
-        sqdist = 0
-        for v,w in zip(V,self.weights):
-            sqdist += (v-w)**2
-        return sqdist
+        return np.linalg.norm(V-self.weights)
 
     def S(self, other_node):
         raise NotImplementedError
