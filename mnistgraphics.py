@@ -8,8 +8,9 @@ class MNISTGraphics:
         self.surface = pygame.display.set_mode((width, height))
         self.colors = [(0,0,102),(102,0,255), (0,153,51), (0,255,255), (255,0,51),(204,102,51), (255,51,255),(255,255,51), (255,0,0),(102,0,0)]
 
-    def draw_frame(self, problem):
+    def draw_frame(self, problem, iteration):
         self.surface.fill((255,255,255))
+        pygame.display.set_caption("Image classifier - Iteration {}".format(iteration))
         for node in problem.nodes:
             x = node.x
             y = node.y
@@ -24,6 +25,8 @@ class MNISTGraphics:
             #self.surface.blit(drawtext,(startx,starty))
 
         pygame.display.flip()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT: sys.exit()
     def wait(self):
         display = True
         while display:

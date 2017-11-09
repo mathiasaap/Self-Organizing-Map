@@ -22,9 +22,8 @@ class SOM(object):
             closest_node = self.closest_node(datapoint)
             self.update_nodes(closest_node, datapoint)
             self.iteration += 1
-            print(self.iteration)
-            if(self.iteration % 10 == 0):
-                self.graphics.draw_frame(self)
+            if(self.iteration % 25 == 0):
+                self.graphics.draw_frame(self, self.iteration)
 
 
 
@@ -44,6 +43,18 @@ class SOM(object):
                 mindist = dist
                 winning_node = node
         return winning_node
+
+    def save(self, filename, type):
+        import json
+        nodes_dict = []
+        for node in self.nodes:
+            nodes_dict.append(node.serialize())
+        output = {}
+        output['nodes'] = nodes_dict
+        output['type'] = type
+        output['classes'] = self.nodes[0].nodes_per_dim
+        with open(filename, 'w') as file:
+            file.write(json.dumps(output))
 
 
 

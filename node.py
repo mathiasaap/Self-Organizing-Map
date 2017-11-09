@@ -24,6 +24,8 @@ class Node(object):
 
     def set_weight(self, weights):
         self.weights = weights
+    def serialize(self):
+        raise NotImplementedError
 
     def __lt__(self, other):
         raise NotImplementedError
