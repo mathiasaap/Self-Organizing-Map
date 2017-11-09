@@ -23,3 +23,9 @@ class Node(object):
         distance = datapoint - self.weights
         #print(learn_rate * t * distance)
         self.weights += learn_rate * t * distance
+
+    def set_weight(self, weights):
+        self.weights = weights
+
+    def __lt__(self, other):
+        raise NotImplementedError

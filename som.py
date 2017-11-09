@@ -40,6 +40,23 @@ class SOM(object):
                 winning_node = node
         return winning_node
 
+    def find_path_nodes(self):
+        path = []
+        for data in self.dataset:
+            distance = float('inf')
+            node_index = 0
+            for i, node in enumerate(self.nodes):
+                dist = node.dist(data)
+                if(dist < distance):
+                    node_index = i
+                    distance = dist
+            path.append(self.nodes.pop(node_index))
+            path[-1].set_weight(data)
+        path.sort()
+        self.path = path
+        print(len(path))
+
+
 
     def update_nodes(self, center_node, datapoint):
         learn_rate = self.learn_rate()

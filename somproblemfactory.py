@@ -21,12 +21,13 @@ class SOMProblemFactory:
         scaler = MinMaxScaler(feature_range=(0, 1))
         dataset = scaler.fit_transform(dataset)
         nodes = []
-        for i in range(cities):
-            nodes.append(TSPNode(i, cities))
+        output_nodes = 2 * cities
+        for i in range(output_nodes):
+            nodes.append(TSPNode(i, output_nodes))
 
-        total_iterations = 20000
+        total_iterations = 2000
         sigma_timeconst = total_iterations/math.log(cities)
-        return TSPSom(dataset, nodes, sigma_0 = cities, scaler = scaler,learn_rate_0 = 1, total_iterations= total_iterations, sigma_timeconst = sigma_timeconst)
+        return TSPSom(dataset, nodes, sigma_0 = output_nodes, scaler = scaler,learn_rate_0 = 1, total_iterations= total_iterations, sigma_timeconst = sigma_timeconst)
 
 
 

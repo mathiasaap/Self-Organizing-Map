@@ -11,8 +11,9 @@ class TSPSom(SOM):
 
 
     def report(self):
-        dataset = np.empty([len(self.nodes), 2])
-        for i, node in enumerate(self.nodes):
+        self.find_path_nodes()
+        dataset = np.empty([len(self.path), 2])
+        for i, node in enumerate(self.path):
             dataset[i][0] = node.weights[0]
             dataset[i][1] = node.weights[1]
         dataset = self.scaler.inverse_transform(dataset)
