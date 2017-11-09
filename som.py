@@ -1,5 +1,6 @@
 import math
 import random
+from tspgraphics import TSPGraphics
 
 class SOM(object):
 
@@ -11,6 +12,7 @@ class SOM(object):
         self.sigma_0 = sigma_0
         self.learn_rate_0 = learn_rate_0
         self.sigma_timeconst = sigma_timeconst
+        self.graphics = TSPGraphics()
 
 
     def train(self):
@@ -20,6 +22,8 @@ class SOM(object):
             closest_node = self.closest_node(datapoint)
             self.update_nodes(closest_node, datapoint)
             self.iteration += 1
+            if(self.iteration % 1000 == 0):
+                self.graphics.draw_frame(self)
 
 
 
@@ -40,27 +44,12 @@ class SOM(object):
                 winning_node = node
         return winning_node
 
-    def find_path_nodes(self):
-        path = []
-        for data in self.dataset:
-            distance = float('inf')
-            node_index = 0
-            for i, node in enumerate(self.nodes):
-                dist = node.dist(data)
-                if(dist < distance):
-                    node_index = i
-                    distance = dist
-            path.append(self.nodes.pop(node_index))
-            path[-1].set_weight(data)
-        path.sort()
-        self.path = path
-        print(len(path))
-
 
 
     def update_nodes(self, center_node, datapoint):
         learn_rate = self.learn_rate()
         sigma = self.sigma()
+        #print("Learn rate: {}\nSigma: {}".format(learn_rate,sigma))
 
         for node in self.nodes:
             node.update_weight(center_node, datapoint, learn_rate, sigma)

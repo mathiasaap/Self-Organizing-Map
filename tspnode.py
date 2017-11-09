@@ -16,7 +16,7 @@ class TSPNode(Node):
         return min(dist1, dist2)
 
     def T(self, other_node, sigma):
-        return math.exp((-self.S(other_node)**2) / 2 * sigma**2)
+        return math.exp((-(self.S(other_node)**2)) / (2 * sigma**2))
 
     def __lt__(self, other):
         return self.x < other.x

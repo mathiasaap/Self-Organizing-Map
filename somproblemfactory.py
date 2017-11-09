@@ -25,9 +25,9 @@ class SOMProblemFactory:
         for i in range(output_nodes):
             nodes.append(TSPNode(i, output_nodes))
 
-        total_iterations = 2000
+        total_iterations = 100000
         sigma_timeconst = total_iterations/math.log(cities)
-        return TSPSom(dataset, nodes, sigma_0 = output_nodes, scaler = scaler,learn_rate_0 = 1, total_iterations= total_iterations, sigma_timeconst = sigma_timeconst)
+        return TSPSom(dataset, nodes, sigma_0 = cities, scaler = scaler,learn_rate_0 = 1, total_iterations= total_iterations, sigma_timeconst = sigma_timeconst)
 
 
 

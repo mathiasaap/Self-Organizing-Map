@@ -23,5 +23,22 @@ class TSPSom(SOM):
         for i in range(len(self.dataset)):
             pathlen += self.tsp_dist(dataset[i], dataset[(i+1)%len(self.dataset)])
 
-
+        self.graphics.draw_frame(self)
+        self.graphics.wait()
         print("Found path with length {}". format(pathlen))
+
+    def find_path_nodes(self):
+        path = []
+        for data in self.dataset:
+            distance = float('inf')
+            node_index = 0
+            for i, node in enumerate(self.nodes):
+                dist = node.dist(data)
+                if(dist < distance):
+                    node_index = i
+                    distance = dist
+            path.append(self.nodes.pop(node_index))
+            path[-1].set_weight(data)
+        path.sort()
+        self.path = path
+        self.nodes = path

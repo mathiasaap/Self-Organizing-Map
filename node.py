@@ -21,6 +21,7 @@ class Node(object):
     def update_weight(self, center_node, datapoint, learn_rate, sigma):
         t = self.T(center_node, sigma)
         distance = datapoint - self.weights
+        #print("T value {}".format(t))
         #print(learn_rate * t * distance)
         self.weights += learn_rate * t * distance
 
