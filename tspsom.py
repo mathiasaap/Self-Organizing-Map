@@ -25,7 +25,7 @@ class TSPSom(SOM):
         for i in range(len(self.dataset)):
             pathlen += self.tsp_dist(dataset[i], dataset[(i+1)%len(self.dataset)])
 
-        self.graphics.draw_frame(self)
+        self.graphics.draw_frame(self, 'DONE')
         self.graphics.wait()
         print("Found path with length {}". format(pathlen))
 
