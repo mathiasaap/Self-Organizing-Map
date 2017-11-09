@@ -13,7 +13,7 @@ class MNISTSom(SOM):
 
     def train(self):
         while self.iteration <= self.total_iterations:
-            datanumber = random.randint(0,len(self.dataset))
+            datanumber = random.randint(0,len(self.dataset) -1 )
             datapoint = self.dataset[datanumber]
             label = self.labels[datanumber]
 
