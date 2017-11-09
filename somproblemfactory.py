@@ -1,7 +1,9 @@
 import numpy as np
 from tspnode import TSPNode
+from mnistnode import MNISTNode
 from som import SOM
 from tspsom import TSPSom
+from mnistsom import MNISTSom
 from sklearn.preprocessing import MinMaxScaler
 import math
 
@@ -29,6 +31,21 @@ class SOMProblemFactory:
         sigma_timeconst = total_iterations/math.log(cities)
         return TSPSom(dataset, nodes, sigma_0 = cities, scaler = scaler,learn_rate_0 = 1, total_iterations= total_iterations, sigma_timeconst = sigma_timeconst)
 
+    def generate_mnist_classifier(self):
+        from mnist_basics import gen_flat_cases
+        x,y = gen_flat_cases()
+        #print(x,y)
+        scaler = MinMaxScaler(feature_range=(0, 1))
+        dataset = scaler.fit_transform(x)
+        classes = len(list(set(y)))
+        print(classes)
+        nodes = []
+        for i in range(classes):
+            for j in range(classes):
+                nodes.append(MNISTNode(i, j, classes, len(x[0])))
+        total_iterations = 5000
+        sigma_timeconst = total_iterations/math.log(classes)
+        return MNISTSom(dataset, y, nodes, sigma_0 = classes, scaler = scaler, learn_rate_0 = 1, total_iterations= total_iterations, sigma_timeconst = sigma_timeconst )
 
 
 
@@ -37,3 +54,5 @@ class SOMProblemFactory:
     def generate_problem(self, filename):
         if "TSP" in filename:
             return self.generate_TSP(filename)
+        if "MNIST" in filename:
+            return self.generate_mnist_classifier()

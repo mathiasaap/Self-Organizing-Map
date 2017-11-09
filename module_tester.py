@@ -3,7 +3,8 @@ import numpy as np
 from somproblemfactory import SOMProblemFactory
 
 som_generator = SOMProblemFactory()
-som = som_generator.generate_problem("data/TSP/3.txt")
+#som = som_generator.generate_problem("data/TSP/3.txt")
+som = som_generator.generate_problem("MNIST")
 #noder = som.nodes
 
 som.train()

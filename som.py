@@ -1,10 +1,10 @@
 import math
 import random
-from tspgraphics import TSPGraphics
+
 
 class SOM(object):
 
-    def __init__(self, dataset, nodes, sigma_0, learn_rate_0, total_iterations, sigma_timeconst):
+    def __init__(self, dataset, nodes, sigma_0, learn_rate_0, total_iterations, sigma_timeconst, graphics):
         self.total_iterations = total_iterations
         self.iteration = 1
         self.dataset = dataset
@@ -12,7 +12,7 @@ class SOM(object):
         self.sigma_0 = sigma_0
         self.learn_rate_0 = learn_rate_0
         self.sigma_timeconst = sigma_timeconst
-        self.graphics = TSPGraphics()
+        self.graphics = graphics
 
 
     def train(self):
@@ -22,7 +22,8 @@ class SOM(object):
             closest_node = self.closest_node(datapoint)
             self.update_nodes(closest_node, datapoint)
             self.iteration += 1
-            if(self.iteration % 1000 == 0):
+            print(self.iteration)
+            if(self.iteration % 10 == 0):
                 self.graphics.draw_frame(self)
 
 
