@@ -32,7 +32,8 @@ class SOM(object):
         return self.sigma_0 * math.exp(-self.iteration / self.sigma_timeconst)
 
     def learn_rate(self):
-        return self.learn_rate_0 * math.exp(-self.iteration / self.total_iterations)
+        self.learnrate_timeconst = 100
+        return self.learn_rate_0 * math.exp(-self.iteration / self.learnrate_timeconst)
 
     def closest_node(self, datapoint):
         mindist = float("inf")

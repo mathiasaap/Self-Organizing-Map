@@ -6,6 +6,7 @@ from tspsom import TSPSom
 from mnistsom import MNISTSom
 from sklearn.preprocessing import MinMaxScaler
 import math
+import random
 
 class SOMProblemFactory:
 
@@ -37,16 +38,29 @@ class SOMProblemFactory:
         #print(x,y)
         scaler = MinMaxScaler(feature_range=(0, 1))
         dataset = scaler.fit_transform(x)
-        classes = len(list(set(y)))
+        classes = len(list(set(y))) +5
         print(classes)
         if nodes is None:
             nodes = []
             for i in range(classes):
                 for j in range(classes):
                     nodes.append(MNISTNode(i, j, classes, len(x[0])))
-        total_iterations = 100000
-        sigma_timeconst = total_iterations/math.log(classes)
-        return MNISTSom(dataset, y, nodes, sigma_0 = classes/2, scaler = scaler, learn_rate_0 = 0.001, total_iterations= total_iterations, sigma_timeconst = sigma_timeconst )
+
+        train_cases = 1500
+        test_cases = 200
+        samples = random.sample(range(0,len(dataset)), train_cases + test_cases)
+
+        train_x, train_y, test_x, test_y = [], [], [], []
+        for sample in samples[:train_cases]:
+            train_x.append(dataset[sample])
+            train_y.append(y[sample])
+        for sample in samples[train_cases:]:
+            test_x.append(dataset[sample])
+            test_y.append(y[sample])
+        total_iterations = 150
+        #sigma_timeconst = total_iterations/math.log(classes)
+        sigma_timeconst = 10
+        return MNISTSom(train_x, train_y, test_x, test_y, nodes, sigma_0 = classes*2, scaler = scaler, learn_rate_0 = 0.3, total_iterations= total_iterations, sigma_timeconst = sigma_timeconst )
 
     def load_json(self, filename):
         import json
