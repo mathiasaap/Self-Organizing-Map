@@ -6,10 +6,11 @@ from tspsom import TSPSom
 from mnistsom import MNISTSom
 from sklearn.preprocessing import MinMaxScaler
 import math
+import random
 
 class SOMProblemFactory:
 
-    def generate_TSP(self, filename):
+    def generate_TSP(self, learn_0, sigma_0, learn_t, sigma_t, iterations, case_number, plot_int):
         with open(filename, 'r') as file:
             cities = int(file.readline().strip().split(" ")[-1])
             file.readline() # Don't care
@@ -31,22 +32,27 @@ class SOMProblemFactory:
         sigma_timeconst = total_iterations/math.log(cities)
         return TSPSom(dataset, nodes, sigma_0 = cities*0.3, scaler = scaler,learn_rate_0 = 0.5, total_iterations= total_iterations, sigma_timeconst = sigma_timeconst)
 
-    def generate_mnist_classifier(self, nodes = None):
+    def generate_mnist_classifier(self, dim, learn_0, sigma_0, learn_t, sigma_t, training_cases, test_cases, epochs, plot_int, nodes = None):
         from mnist_basics import gen_flat_cases
         x,y = gen_flat_cases()
-        #print(x,y)
         scaler = MinMaxScaler(feature_range=(0, 1))
         dataset = scaler.fit_transform(x)
-        classes = len(list(set(y)))
-        print(classes)
         if nodes is None:
             nodes = []
-            for i in range(classes):
-                for j in range(classes):
-                    nodes.append(MNISTNode(i, j, classes, len(x[0])))
-        total_iterations = 100000
-        sigma_timeconst = total_iterations/math.log(classes)
-        return MNISTSom(dataset, y, nodes, sigma_0 = classes/2, scaler = scaler, learn_rate_0 = 0.001, total_iterations= total_iterations, sigma_timeconst = sigma_timeconst )
+            for i in range(dim):
+                for j in range(dim):
+                    nodes.append(MNISTNode(i, j, dim, len(x[0])))
+
+        samples = random.sample(range(0,len(dataset)), training_cases + test_cases)
+
+        train_x, train_y, test_x, test_y = [], [], [], []
+        for sample in samples[:training_cases]:
+            train_x.append(dataset[sample])
+            train_y.append(y[sample])
+        for sample in samples[training_cases:]:
+            test_x.append(dataset[sample])
+            test_y.append(y[sample])
+        return MNISTSom(train_x, train_y, test_x, test_y, nodes, sigma_0 = sigma_0, learn_rate_0 = learn_0, sigma_timeconst = sigma_t, learn_rate_timeconst = learn_t, scaler = scaler, total_iterations= epochs, plot_interal =plot_int )
 
     def load_json(self, filename):
         import json
@@ -62,6 +68,36 @@ class SOMProblemFactory:
                 mnistnode.labels = np.asarray(node['labels'], dtype = np.int)
                 nodes.append(mnistnode)
             return self.generate_mnist_classifier(nodes)
+
+    def read_config(self, filename):
+        with open(filename, 'r') as file:
+            json_str = file.read()
+        import json
+        json = json.loads(json_str)
+        if json['type'] == 'mnist':
+            dim = json['dim']
+            learn_0 = json['learn_0']
+            sigma_0 = json['sigma_0']
+            learn_t = json['learn_t']
+            sigma_t = json['sigma_t']
+            training_cases = json['training_cases']
+            test_cases = json['test_cases']
+            epochs = json['epochs']
+            plot_int = json['plot_int']
+            return self.generate_mnist_classifier(dim, learn_0, sigma_0, learn_t, sigma_t, training_cases, test_cases, epochs, plot_int)
+        elif json['type'] == 'tsp':
+            learn_0 = json['learn_0']
+            sigma_0 = json['sigma_0']
+            learn_t = json['learn_t']
+            sigma_t = json['sigma_t']
+            iterations = json['iterations']
+            case_number = json['case_number']
+            plot_int = json['plot_int']
+            return self.generate_TSP(learn_0, sigma_0, learn_t, sigma_t, iterations, case_number, plot_int)
+
+
+
+
 
 
 

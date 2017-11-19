@@ -1,0 +1,10 @@
+{
+  "type": "tsp",
+  "learn_0": 0.6,
+  "sigma_0": 20,
+  "learn_t": 50,
+  "sigma_t": 15,
+  "iterations": 1000,
+  "case_number": 1
+  "plot_int": 15
+}
