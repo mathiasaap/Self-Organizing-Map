@@ -1,0 +1,12 @@
+{
+  "type": "mnist",
+  "dim": 17,
+  "learn_0": 0.6,
+  "sigma_0": 20,
+  "learn_t": 50,
+  "sigma_t": 15,
+  "training_cases": 700,
+  "test_cases": 200,
+  "epochs": 150,
+  "plot_int": 15
+}

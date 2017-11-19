@@ -4,7 +4,7 @@ import random
 
 class SOM(object):
 
-    def __init__(self, dataset, nodes, sigma_0, learn_rate_0, total_iterations, sigma_timeconst, graphics):
+    def __init__(self, dataset, nodes, sigma_0, learn_rate_0, sigma_timeconst, learn_timeconst, total_iterations, graphics):
         self.total_iterations = total_iterations
         self.iteration = 1
         self.dataset = dataset
@@ -12,6 +12,7 @@ class SOM(object):
         self.sigma_0 = sigma_0
         self.learn_rate_0 = learn_rate_0
         self.sigma_timeconst = sigma_timeconst
+        self.learn_timeconst = learn_timeconst
         self.graphics = graphics
 
 
@@ -32,8 +33,7 @@ class SOM(object):
         return self.sigma_0 * math.exp(-self.iteration / self.sigma_timeconst)
 
     def learn_rate(self):
-        self.learnrate_timeconst = 100
-        return self.learn_rate_0 * math.exp(-self.iteration / self.learnrate_timeconst)
+        return self.learn_rate_0 * math.exp(-self.iteration / self.learn_timeconst)
 
     def closest_node(self, datapoint):
         mindist = float("inf")

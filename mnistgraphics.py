@@ -25,11 +25,13 @@ class MNISTGraphics:
             #self.surface.blit(drawtext,(startx,starty))
 
         pygame.display.flip()
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT: sys.exit()
+        self.handle_event_loop()
     def wait(self):
         display = True
         while display:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT: display = False
             time.sleep(0.1)
+    def handle_event_loop(self):
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT: sys.exit()
