@@ -1,6 +1,6 @@
 {
   "type": "tsp",
-  "sigma_0":50,
+  "sigma_0":60,
   "sigma_timeconst":1000,
   "learn_timeconst": 5000,
   "learn_rate": 0.5,

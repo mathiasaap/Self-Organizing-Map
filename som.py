@@ -27,6 +27,11 @@ class SOM(object):
             if(self.iteration % self.plot_interval == 0):
                 self.graphics.draw_frame(self, self.iteration)
 
+            print("Initial neighbourhood {}".format(self.sigma_0))
+            print("Initial learning rate {}".format(self.learn_rate_0))
+            print("Learn rate {}".format(self.learn_rate()))
+            print("Sigma {}".format(self.sigma()))
+
 
     def sigma(self):
         return self.sigma_0 * math.exp(-self.iteration / self.sigma_timeconst)

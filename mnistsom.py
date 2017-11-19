@@ -24,7 +24,6 @@ class MNISTSom(SOM):
                 self.update_labels()
                 self.graphics.draw_frame(self, self.iteration)
                 self.test(type='train')
-                self.test(type='test')
                 print("Learn rate {}".format(self.learn_rate()))
                 print("Sigma {}".format(self.sigma()))
 
