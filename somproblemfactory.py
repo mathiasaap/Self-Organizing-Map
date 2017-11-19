@@ -10,7 +10,7 @@ import random
 
 class SOMProblemFactory:
 
-    def generate_TSP(self, filename):
+    def generate_TSP(self, learn_0, sigma_0, learn_t, sigma_t, iterations, case_number, plot_int):
         with open(filename, 'r') as file:
             cities = int(file.readline().strip().split(" ")[-1])
             file.readline() # Don't care
@@ -52,7 +52,7 @@ class SOMProblemFactory:
         for sample in samples[training_cases:]:
             test_x.append(dataset[sample])
             test_y.append(y[sample])
-        return MNISTSom(train_x, train_y, test_x, test_y, nodes, sigma_0 = sigma_0, learn_rate_0 = learn_0, sigma_timeconst = sigma_t, learn_rate_timeconst = learn_t, scaler = scaler, total_iterations= epochs )
+        return MNISTSom(train_x, train_y, test_x, test_y, nodes, sigma_0 = sigma_0, learn_rate_0 = learn_0, sigma_timeconst = sigma_t, learn_rate_timeconst = learn_t, scaler = scaler, total_iterations= epochs, plot_interal =plot_int )
 
     def load_json(self, filename):
         import json
@@ -85,6 +85,16 @@ class SOMProblemFactory:
             epochs = json['epochs']
             plot_int = json['plot_int']
             return self.generate_mnist_classifier(dim, learn_0, sigma_0, learn_t, sigma_t, training_cases, test_cases, epochs, plot_int)
+        elif json['type'] == 'tsp':
+            learn_0 = json['learn_0']
+            sigma_0 = json['sigma_0']
+            learn_t = json['learn_t']
+            sigma_t = json['sigma_t']
+            iterations = json['iterations']
+            case_number = json['case_number']
+            plot_int = json['plot_int']
+            return self.generate_TSP(learn_0, sigma_0, learn_t, sigma_t, iterations, case_number, plot_int)
+
 
 
 

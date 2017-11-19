@@ -5,8 +5,8 @@ from mnistgraphics import MNISTGraphics
 import random
 
 class MNISTSom(SOM):
-    def __init__(self, train_x, train_y, test_x, test_y, nodes, sigma_0, learn_rate_0, total_iterations, learn_rate_timeconst, scaler, sigma_timeconst):
-        SOM.__init__(self, train_x, nodes, sigma_0, learn_rate_0, sigma_timeconst, learn_rate_timeconst, total_iterations, graphics = MNISTGraphics())
+    def __init__(self, train_x, train_y, test_x, test_y, nodes, sigma_0, learn_rate_0, total_iterations, learn_rate_timeconst, scaler, sigma_timeconst, plot_interval):
+        SOM.__init__(self, train_x, nodes, sigma_0, learn_rate_0, sigma_timeconst, learn_rate_timeconst, total_iterations, plot_interval=plot_interval, graphics = MNISTGraphics())
         self.scaler = scaler
         self.train_y = train_y
         self.test_x = test_x
@@ -20,17 +20,19 @@ class MNISTSom(SOM):
                 closest_node = self.closest_node(data)
                 self.update_nodes(closest_node, data)
 
-            if(self.iteration % 10 == 0):
+            if(self.iteration % self.plot_interval == 0):
                 self.update_labels()
                 self.graphics.draw_frame(self, self.iteration)
-                self.test()
+                self.test(type='train')
+                self.test(type='test')
                 print("Learn rate {}".format(self.learn_rate()))
                 print("Sigma {}".format(self.sigma()))
 
 
             self.iteration += 1
         self.graphics.wait()
-        self.test()
+        self.test(type='train')
+        self.test(type='test')
 
 
         """
@@ -54,13 +56,22 @@ class MNISTSom(SOM):
 
 
 
-    def test(self):
+    def test(self, type = 'train'):
+        if type == 'train':
+            data_x = self.dataset
+            data_y = self.train_y
+        elif type == 'test':
+            data_x = self.test_x
+            data_y = self.test_y
+        else:
+            return
+
         correct = 0
         for data, label in zip(self.dataset, self.train_y):
             closest_node = self.closest_node(data)
             if closest_node.get_number() == label:
                 correct += 1
-        print("Accuracy: {}".format(correct/len(self.dataset)))
+        print("{} accuracy: {}".format(type,correct/len(self.dataset)))
 
     def update_labels(self):
         for node in self.nodes:

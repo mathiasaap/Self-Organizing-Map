@@ -4,7 +4,7 @@ import random
 
 class SOM(object):
 
-    def __init__(self, dataset, nodes, sigma_0, learn_rate_0, sigma_timeconst, learn_timeconst, total_iterations, graphics):
+    def __init__(self, dataset, nodes, sigma_0, learn_rate_0, sigma_timeconst, learn_timeconst, total_iterations, plot_interval, graphics):
         self.total_iterations = total_iterations
         self.iteration = 1
         self.dataset = dataset
@@ -13,6 +13,7 @@ class SOM(object):
         self.learn_rate_0 = learn_rate_0
         self.sigma_timeconst = sigma_timeconst
         self.learn_timeconst = learn_timeconst
+        self.plot_interval = plot_interval
         self.graphics = graphics
 
 
@@ -23,12 +24,10 @@ class SOM(object):
             closest_node = self.closest_node(datapoint)
             self.update_nodes(closest_node, datapoint)
             self.iteration += 1
-            if(self.iteration % 25 == 0):
+            if(self.iteration % self.plot_interval == 0):
                 self.graphics.draw_frame(self, self.iteration)
 
 
-
-    # Neighbourhood size
     def sigma(self):
         return self.sigma_0 * math.exp(-self.iteration / self.sigma_timeconst)
 
