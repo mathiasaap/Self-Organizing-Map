@@ -18,7 +18,7 @@ class TSPSom(SOM):
         for i, node in enumerate(self.path):
             dataset[i][0] = node.weights[0]
             dataset[i][1] = node.weights[1]
-        dataset = self.scaler.inverse_transform(dataset)
+        #dataset = self.scaler.inverse_transform(dataset)
 
 
         pathlen = 0

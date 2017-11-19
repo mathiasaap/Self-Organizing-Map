@@ -20,7 +20,9 @@ class Node(object):
         distance = datapoint - self.weights
         #print("T value {}".format(t))
         #print(learn_rate * t * distance)
-        self.weights += learn_rate * t * distance
+        if self.S(center_node) < sigma:
+            self.weights += learn_rate * 0.5 * distance
+            #self.weights += learn_rate * t * distance
 
     def set_weight(self, weights):
         self.weights = weights

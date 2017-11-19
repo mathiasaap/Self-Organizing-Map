@@ -10,7 +10,7 @@ import random
 
 class SOMProblemFactory:
 
-    def generate_TSP(self, iterations, filename, plot_int, learn_rate):
+    def generate_TSP(self, iterations, filename, plot_int, learn_rate, learn_timeconst, sigma_0, sigma_timeconst):
         with open(filename, 'r') as file:
             cities = int(file.readline().strip().split(" ")[-1])
             file.readline() # Don't care
@@ -22,14 +22,12 @@ class SOMProblemFactory:
                 dataset[i][0] = line_data[1]
                 dataset[i][1] = line_data[2]
         scaler = MinMaxScaler(feature_range=(0, 1))
-        dataset = scaler.fit_transform(dataset)
+        #dataset = scaler.fit_transform(dataset)
         nodes = []
-        output_nodes = 2 * cities
+        output_nodes = 4 * cities
         for i in range(output_nodes):
             nodes.append(TSPNode(i, output_nodes, cities))
-
-        sigma_timeconst = iterations/math.log(cities)
-        return TSPSom(dataset, nodes, sigma_0 = output_nodes*0.1, scaler = scaler, learn_rate_0 = learn_rate, total_iterations= iterations, sigma_timeconst = sigma_timeconst, learn_t = iterations, plot_interval = plot_int)
+        return TSPSom(dataset, nodes, sigma_0 = sigma_0, scaler = scaler, learn_rate_0 = learn_rate, total_iterations= iterations, sigma_timeconst = sigma_timeconst, learn_t =learn_timeconst , plot_interval = plot_int)
 
     def generate_mnist_classifier(self, dim, learn_0, sigma_0, learn_t, sigma_t, training_cases, test_cases, epochs, plot_int, nodes = None):
         from mnist_basics import gen_flat_cases
@@ -86,7 +84,11 @@ class SOMProblemFactory:
             return self.generate_mnist_classifier(dim, learn_0, sigma_0, learn_t, sigma_t, training_cases, test_cases, epochs, plot_int)
         elif json['type'] == 'tsp':
             learn_rate = json['learn_rate']
+            sigma_0 = json['sigma_0']
+            sigma_timeconst = json['sigma_timeconst']
+            learn_timeconst = json['learn_timeconst']
+
             iterations = json['iterations']
             filename = json['filename']
             plot_int = json['plot_int']
-            return self.generate_TSP(iterations, filename, plot_int, learn_rate)
+            return self.generate_TSP(iterations, filename, plot_int, learn_rate, learn_timeconst, sigma_0, sigma_timeconst)
