@@ -4,8 +4,8 @@ import math
 from tspgraphics import TSPGraphics
 
 class TSPSom(SOM):
-    def __init__(self, dataset, nodes, sigma_0, learn_rate_0, total_iterations, scaler, sigma_timeconst):
-        SOM.__init__(self, dataset, nodes, sigma_0, learn_rate_0, total_iterations, sigma_timeconst, graphics = TSPGraphics())
+    def __init__(self, dataset, nodes, sigma_0, learn_rate_0, total_iterations, scaler, sigma_timeconst, learn_t, plot_interval):
+        SOM.__init__(self, dataset, nodes, sigma_0 = sigma_0, learn_rate_0 = learn_rate_0, total_iterations = total_iterations, sigma_timeconst = sigma_timeconst, learn_timeconst = learn_t, plot_interval = plot_interval, graphics = TSPGraphics())
         self.scaler = scaler
 
     def tsp_dist(self, weight1, weight2):

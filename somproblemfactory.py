@@ -10,7 +10,7 @@ import random
 
 class SOMProblemFactory:
 
-    def generate_TSP(self, learn_0, sigma_0, learn_t, sigma_t, iterations, case_number, plot_int):
+    def generate_TSP(self, iterations, filename, plot_int, learn_rate):
         with open(filename, 'r') as file:
             cities = int(file.readline().strip().split(" ")[-1])
             file.readline() # Don't care
@@ -28,9 +28,8 @@ class SOMProblemFactory:
         for i in range(output_nodes):
             nodes.append(TSPNode(i, output_nodes, cities))
 
-        total_iterations = 50000
-        sigma_timeconst = total_iterations/math.log(cities)
-        return TSPSom(dataset, nodes, sigma_0 = cities*0.3, scaler = scaler,learn_rate_0 = 0.5, total_iterations= total_iterations, sigma_timeconst = sigma_timeconst)
+        sigma_timeconst = iterations/math.log(cities)
+        return TSPSom(dataset, nodes, sigma_0 = output_nodes*0.1, scaler = scaler, learn_rate_0 = learn_rate, total_iterations= iterations, sigma_timeconst = sigma_timeconst, learn_t = iterations, plot_interval = plot_int)
 
     def generate_mnist_classifier(self, dim, learn_0, sigma_0, learn_t, sigma_t, training_cases, test_cases, epochs, plot_int, nodes = None):
         from mnist_basics import gen_flat_cases
@@ -52,7 +51,7 @@ class SOMProblemFactory:
         for sample in samples[training_cases:]:
             test_x.append(dataset[sample])
             test_y.append(y[sample])
-        return MNISTSom(train_x, train_y, test_x, test_y, nodes, sigma_0 = sigma_0, learn_rate_0 = learn_0, sigma_timeconst = sigma_t, learn_rate_timeconst = learn_t, scaler = scaler, total_iterations= epochs, plot_interal =plot_int )
+        return MNISTSom(train_x, train_y, test_x, test_y, nodes, sigma_0 = sigma_0, learn_rate_0 = learn_0, sigma_timeconst = sigma_t, learn_rate_timeconst = learn_t, scaler = scaler, total_iterations= epochs, plot_interval =plot_int )
 
     def load_json(self, filename):
         import json
@@ -86,25 +85,8 @@ class SOMProblemFactory:
             plot_int = json['plot_int']
             return self.generate_mnist_classifier(dim, learn_0, sigma_0, learn_t, sigma_t, training_cases, test_cases, epochs, plot_int)
         elif json['type'] == 'tsp':
-            learn_0 = json['learn_0']
-            sigma_0 = json['sigma_0']
-            learn_t = json['learn_t']
-            sigma_t = json['sigma_t']
+            learn_rate = json['learn_rate']
             iterations = json['iterations']
-            case_number = json['case_number']
+            filename = json['filename']
             plot_int = json['plot_int']
-            return self.generate_TSP(learn_0, sigma_0, learn_t, sigma_t, iterations, case_number, plot_int)
-
-
-
-
-
-
-
-    def generate_problem(self, filename):
-        if filename.endswith('.json'):
-            return self.load_json(filename)
-        if "TSP" in filename:
-            return self.generate_TSP(filename)
-        if "MNIST" in filename:
-            return self.generate_mnist_classifier()
+            return self.generate_TSP(iterations, filename, plot_int, learn_rate)

@@ -1,10 +1,7 @@
 {
   "type": "tsp",
-  "learn_0": 0.6,
-  "sigma_0": 20,
-  "learn_t": 50,
-  "sigma_t": 15,
-  "iterations": 1000,
-  "case_number": 1
-  "plot_int": 15
+  "learn_rate": 0.4,
+  "iterations": 30000,
+  "filename": "data/TSP/Euclidean/8_euclid.txt",
+  "plot_int": 50
 }
